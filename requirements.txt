@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+pydantic
+email-validator
+python-jose[cryptography]
+passlib
+httpx
+python-dotenv
+openpyxl
