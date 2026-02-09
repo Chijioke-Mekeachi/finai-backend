@@ -7,3 +7,4 @@ httpx
 openpyxl
 mangum
 python-dotenv
+python-multipart
