@@ -25,10 +25,10 @@ source .venv/bin/activate
 pip install -r requirements-dev.txt
 ```
 
-Run (loads `backend/.env` only when `LOAD_DOTENV=1`):
+Run (auto-loads `backend/.env` locally; set `LOAD_DOTENV=0` to disable):
 
 ```bash
-LOAD_DOTENV=1 uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
 
 ## AWS Lambda

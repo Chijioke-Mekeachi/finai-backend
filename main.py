@@ -14,10 +14,35 @@ import httpx
 from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 
-# Serverless-friendly env loading:
-# - In production/serverless, set real environment variables via your platform.
-# - For local development, opt-in to loading `backend/.env` by setting `LOAD_DOTENV=1`.
-if (os.getenv("LOAD_DOTENV") or "").strip() == "1":
+def _running_in_serverless() -> bool:
+    # Common runtime-provided env vars for serverless platforms.
+    for k in (
+        "VERCEL",
+        "AWS_LAMBDA_FUNCTION_NAME",
+        "K_SERVICE",  # Google Cloud Run
+        "FUNCTIONS_WORKER_RUNTIME",  # Azure Functions
+    ):
+        if (os.getenv(k) or "").strip():
+            return True
+    return False
+
+
+def _should_load_dotenv() -> bool:
+    """
+    Local dev convenience:
+    - Default: load `backend/.env` when NOT running in a serverless runtime.
+    - `LOAD_DOTENV=1` forces loading.
+    - `LOAD_DOTENV=0` disables loading.
+    """
+    flag = (os.getenv("LOAD_DOTENV") or "").strip()
+    if flag == "1":
+        return True
+    if flag == "0":
+        return False
+    return not _running_in_serverless()
+
+
+if _should_load_dotenv():
     try:
         from dotenv import load_dotenv  # type: ignore
 

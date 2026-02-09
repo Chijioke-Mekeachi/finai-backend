@@ -6,3 +6,4 @@ passlib
 httpx
 openpyxl
 mangum
+python-dotenv
