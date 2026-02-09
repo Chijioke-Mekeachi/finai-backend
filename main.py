@@ -14,13 +14,16 @@ import httpx
 from fastapi import Depends, FastAPI, File, Header, HTTPException, UploadFile, status
 from fastapi.middleware.cors import CORSMiddleware
 
-# Load backend/.env automatically for local runs.
-try:
-    from dotenv import load_dotenv  # type: ignore
+# Serverless-friendly env loading:
+# - In production/serverless, set real environment variables via your platform.
+# - For local development, opt-in to loading `backend/.env` by setting `LOAD_DOTENV=1`.
+if (os.getenv("LOAD_DOTENV") or "").strip() == "1":
+    try:
+        from dotenv import load_dotenv  # type: ignore
 
-    load_dotenv(os.path.join(os.path.dirname(__file__), ".env"), override=True)
-except Exception:
-    pass
+        load_dotenv(os.path.join(os.path.dirname(__file__), ".env"), override=False)
+    except Exception:
+        pass
 
 try:
     from .deps import CurrentUser, get_current_user
@@ -1530,4 +1533,3 @@ async def paystack_verify(
         auth="admin",
     )
     return PaystackVerifyResponse(status="succeeded", plan_id=plan_id, reference=ref)
-
