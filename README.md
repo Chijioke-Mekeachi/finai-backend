@@ -38,3 +38,9 @@ Use the handler:
 - If your zip root *is* the backend folder: `lambda_handler.handler`
 
 Runtime deps are in `backend/requirements.txt` (no `uvicorn`).
+
+## Vercel
+
+- Set the Vercel Project Root Directory to `backend/`.
+- The serverless entrypoint is `api/index.py` (exports `app`).
+- Routing is configured by `backend/vercel.json`.
