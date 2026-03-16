@@ -28,7 +28,7 @@ pip install -r requirements-dev.txt
 Run (auto-loads `backend/.env` locally; set `LOAD_DOTENV=0` to disable):
 
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 3001
 ```
 
 ## AWS Lambda
